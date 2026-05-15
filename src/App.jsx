@@ -35,7 +35,8 @@ function App() {
   }, [])
 
   async function generateTimesheet() {
-    const response = await fetch('/Timesheet.xlsx')
+    const base = import.meta.env.BASE_URL
+    const response = await fetch(`${base}Timesheet.xlsx`)
     const buffer = await response.arrayBuffer()
     const workbook = new ExcelJS.Workbook()
     await workbook.xlsx.load(buffer)
@@ -54,7 +55,7 @@ function App() {
     sheet.getCell('AB7').value = targetYear
 
     // Holidays
-    const holidays = await fetch('/holidays.txt')
+    const holidays = await fetch(`${base}holidays.txt`)
       .then(res => res.text())
       .then(text => text.split('\n')
         .map(line => line.split('#')[0].trim())
